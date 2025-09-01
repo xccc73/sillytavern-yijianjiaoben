@@ -84,7 +84,7 @@ sed -i 's/^listen: false$/listen: true/' config.yaml
 sed -i 's/^enableUserAccounts: true$/enableUserAccounts: false/' config.yaml
 # 3. 确保enableDiscreetLogin为false（与目标一致，覆盖默认true）
 sed -i 's/^enableDiscreetLogin: true$/enableDiscreetLogin: false/' config.yaml
-# 4. 配置白名单IP（完全匹配你的目标：::1、127.0.0.1、0.0.0.0/0、172.19.0.2、10.1.2.153）
+# 4. 配置白名单IP（完全匹配你的目标：::1、127.0.0.1、0.0.0.0/0）
 # 先删除默认的127.0.0.1（避免重复）
 sed -i '/^  - 127\.0\.0\.1$/d' config.yaml
 # 在whitelist:行下方新增所有目标IP（注意缩进格式：2个空格+'- '）
