@@ -65,16 +65,20 @@ done
 echo -e "${GREEN_BOLD}>> 步骤 5/7: 停止服务以修改配置...${RESET}"
 docker compose stop
 
-echo -e "${GREEN_BOLD}>> 步骤 6/7: 备份并修改配置文件...${RESET}"
+# ======================== 逻辑调整点在这里 ========================
+echo -e "${GREEN_BOLD}>> 步骤 6/7: 修改配置文件并备份...${RESET}"
 cd "$CONFIG_DIR"
-cp config.yaml config.yaml.bak
+
+# 1. 首先，执行所有修改
 sed -i 's/^listen: false$/listen: true/' config.yaml
 sed -i 's/^whitelistMode: true$/whitelistMode: false/' config.yaml
 sed -i 's/^basicAuthMode: false$/basicAuthMode: true/' config.yaml
 sed -i "s/^  username: \"user\"$/  username: \"$AUTH_USER\"/" config.yaml
-# ======================== 修正点在这里 ========================
-# 将错误的变量 $PASS 更改为正确的 $AUTH_PASS
 sed -i "s/^  password: \"password\"$/  password: \"$AUTH_PASS\"/" config.yaml
+
+# 2. 然后，备份修改后的文件
+cp config.yaml config.yaml.bak
+echo -e "${GREEN_BOLD}>> 配置文件已修改，并已将修改后的版本备份为 config.yaml.bak${RESET}"
 # =============================================================
 
 echo -e "${GREEN_BOLD}>> 步骤 7/7: 重启服务应用新配置...${RESET}"
