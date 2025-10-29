@@ -72,7 +72,10 @@ sed -i 's/^listen: false$/listen: true/' config.yaml
 sed -i 's/^whitelistMode: true$/whitelistMode: false/' config.yaml
 sed -i 's/^basicAuthMode: false$/basicAuthMode: true/' config.yaml
 sed -i "s/^  username: \"user\"$/  username: \"$AUTH_USER\"/" config.yaml
-sed -i "s/^  password: \"password\"$/  password: \"$PASS\"/" config.yaml
+# ======================== 修正点在这里 ========================
+# 将错误的变量 $PASS 更改为正确的 $AUTH_PASS
+sed -i "s/^  password: \"password\"$/  password: \"$AUTH_PASS\"/" config.yaml
+# =============================================================
 
 echo -e "${GREEN_BOLD}>> 步骤 7/7: 重启服务应用新配置...${RESET}"
 cd "$WORKDIR"
@@ -107,7 +110,7 @@ install_plugin() {
     fi
 }
 
-# 依次调用函数，安装所有插件 (已修正为官方 GitHub 地址)
+# 依次调用函数，安装所有插件 (使用官方 GitHub 地址)
 install_plugin "酒馆助手" "https://github.com/N0VI028/JS-Slash-Runner.git" "JS-Slash-Runner"
 install_plugin "信息栏集成工具" "https://github.com/loveyouguhan/Information-bar-integration-tool.git" "Information-bar-integration-tool"
 install_plugin "前端分词器" "https://github.com/GoldenglowMeow/ST-Frontend-Tokenizer.git" "ST-Frontend-Tokenizer"
