@@ -72,7 +72,7 @@ sed -i 's/^listen: false$/listen: true/' config.yaml
 sed -i 's/^whitelistMode: true$/whitelistMode: false/' config.yaml
 sed -i 's/^basicAuthMode: false$/basicAuthMode: true/' config.yaml
 sed -i "s/^  username: \"user\"$/  username: \"$AUTH_USER\"/" config.yaml
-sed -i "s/^  password: \"password\"$/  password: \"$AUTH_PASS\"/" config.yaml
+sed -i "s/^  password: \"password\"$/  password: \"$PASS\"/" config.yaml
 
 echo -e "${GREEN_BOLD}>> 步骤 7/7: 重启服务应用新配置...${RESET}"
 cd "$WORKDIR"
@@ -94,28 +94,23 @@ install_plugin() {
     local plugin_name="$1"
     local repo_url="$2"
     local target_dir_name="$3"
-    # 根据 docker-compose.yml 的 volumes 映射，插件应安装在 ./extensions 目录下
     local plugin_dir="${WORKDIR}/extensions/${target_dir_name}"
 
     echo -e "\n${YELLOW_BOLD}--- 正在安装 [${plugin_name}] ---${RESET}"
 
-    # 首先检查目录是否已存在
     if [ -d "$plugin_dir" ]; then
-        # 如果已存在，打印提示并跳过
         echo -e "${YELLOW_BOLD}>> 插件目录已存在，跳过安装。${RESET}"
     else
-        # 如果不存在，执行 git clone
-        # 这里是实现成功/失败提示的关键
         git clone "${repo_url}" "$plugin_dir" \
             && echo -e "${GREEN_BOLD}>> [${plugin_name}] 安装成功。${RESET}" \
             || echo -e "${RED_BOLD}>> [${plugin_name}] 安装失败，请检查网络或仓库地址。${RESET}"
     fi
 }
 
-# 依次调用函数，安装所有插件
-install_plugin "酒馆助手" "https://dgithub.xyz/N0VI028/JS-Slash-Runner.git" "JS-Slash-Runner"
-install_plugin "信息栏集成工具" "https://dgithub.xyz/loveyouguhan/Information-bar-integration-tool.git" "Information-bar-integration-tool"
-install_plugin "前端分词器" "https://dgithub.xyz/GoldenglowMeow/ST-Frontend-Tokenizer.git" "ST-Frontend-Tokenizer"
+# 依次调用函数，安装所有插件 (已修正为官方 GitHub 地址)
+install_plugin "酒馆助手" "https://github.com/N0VI028/JS-Slash-Runner.git" "JS-Slash-Runner"
+install_plugin "信息栏集成工具" "https://github.com/loveyouguhan/Information-bar-integration-tool.git" "Information-bar-integration-tool"
+install_plugin "前端分词器" "https://github.com/GoldenglowMeow/ST-Frontend-Tokenizer.git" "ST-Frontend-Tokenizer"
 
 echo -e "\n${GREEN_BOLD}所有插件安装流程执行完毕。${RESET}"
 echo -e "${GREEN_BOLD}部署完成，祝您使用愉快！${RESET}"
